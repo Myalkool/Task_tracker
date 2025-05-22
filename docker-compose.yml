@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:alpine
+    container_name: task_tracker_redis
+    ports:
+      - "6379:6379"
+
+  web:
+    build:
+      context: .
+    command: >
+      bash -c "python manage.py migrate && gunicorn task_tracker.wsgi:application --bind 0.0.0.0:8000"
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+    working_dir: /code
+
+  celery:
+    build:
+      context: .
+    command: ["bash", "-c", "celery -A task_tracker worker --loglevel=info"]
+    volumes:
+      - .:/code
+    depends_on:
+      - redis
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - BOT_TOKEN=${BOT_TOKEN}
+
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+
+    working_dir: /code
+
+  celery-beat:
+    build:
+      context: .
+    command: celery -A task_tracker beat --loglevel=info
+    volumes:
+      - .:/code
+    depends_on:
+      - redis
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - BOT_TOKEN=${BOT_TOKEN}
+
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+
+    working_dir: /code

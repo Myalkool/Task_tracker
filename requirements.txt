@@ -1,0 +1,7 @@
+Django
+gunicorn
+celery
+redis
+requests
+djangorestframework
+aiogram
