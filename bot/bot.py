@@ -75,9 +75,6 @@ async def cmd_done(message: Message):
 
 @dp.message(Command("getid"))
 async def cmd_getid(message: Message):
-    """
-    Эта команда просто отвечает: "Ваш Telegram ID: <число>"
-    """
     await message.answer(f"Ваш Telegram ID: {message.from_user.id}")
 
 
