@@ -32,7 +32,7 @@ cd Task_tracker
 
 ### 2. Создать файл .env (рядом с docker-compose.yml):
 
-```dotenv
+```.env
 BOT_TOKEN=ваш_токен_бота
 ```
 
@@ -41,4 +41,17 @@ BOT_TOKEN=ваш_токен_бота
 ```bash
 docker compose down
 docker compose up -d --build
+```
+
+## 🤖 Запуск Telegram-бота (локально)
+
+### 1. Установить зависимости
+
+```
+pip install -r requirements.txt
+```
+
+### 2. Запустить бота
+```
+python bot/bot.py
 ```
