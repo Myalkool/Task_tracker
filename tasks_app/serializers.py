@@ -11,5 +11,6 @@ class TaskSerializer(serializers.ModelSerializer):
             'deadline',
             'telegram_user_id',
             'status',
+            'notified',
         ]
         read_only_fields = ['id']
